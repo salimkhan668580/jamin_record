@@ -3,6 +3,7 @@ import { sumRakwa, sumYeDi } from "../lib/rakwa";
 const COLUMNS = [
   { key: "khata", label: "खाता" },
   { key: "khesra", label: "खेसरा" },
+  { key: "localName", label: "Local Name" },
   { key: "rakwa", label: "रकवा" },
   { key: "yeDi", label: "ए0 डी0" },
 ];
@@ -65,7 +66,10 @@ export default function RecordList({ records }) {
 
             <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-3">
               {COLUMNS.map((column) => (
-                <div key={column.key}>
+                <div
+                  key={column.key}
+                  className={column.key === "localName" ? "col-span-2" : undefined}
+                >
                   <dt className="text-[11px] text-text/55">{column.label}</dt>
                   <dd
                     className={
@@ -92,7 +96,7 @@ export default function RecordList({ records }) {
 
       {/* Desktop: table */}
       <div className="hidden overflow-x-auto rounded-2xl border border-border bg-card md:block">
-        <table className="w-full min-w-[720px] text-left text-sm">
+        <table className="w-full min-w-[820px] text-left text-sm">
           <thead className="bg-primary/5 text-xs uppercase text-text/60">
             <tr>
               <th className="px-4 py-3 font-medium">क्रम</th>
@@ -145,7 +149,7 @@ export default function RecordList({ records }) {
           </tbody>
           <tfoot className="bg-background text-sm font-semibold text-text">
             <tr>
-              <td className="px-4 py-3" colSpan={3}>
+              <td className="px-4 py-3" colSpan={4}>
                 कुल ({records.length})
               </td>
               <td className="px-4 py-3 text-primary">{sumRakwa(records)}</td>

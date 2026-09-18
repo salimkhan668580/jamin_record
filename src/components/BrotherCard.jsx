@@ -9,11 +9,11 @@ export default function BrotherCard({ brother, records, disabled = false }) {
       </span>
 
       <div className="min-w-0 flex-1">
-        <p className="truncate font-semibold text-text">{brother.nameHi}</p>
-        <p className="truncate text-xs text-text/55">{brother.name}</p>
+        <p className="truncate font-semibold text-text">{brother.name}</p>
+        <p className=" truncate text-xs text-text/55">{brother.nameHi}</p>
         <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-text/70">
           {disabled ? (
-            <span className="text-text/45">Excel जल्द आएगा</span>
+            <span className="text-text/45">Data will be added soon</span>
           ) : (
             <>
               <span>{records.length} रिकॉर्ड</span>

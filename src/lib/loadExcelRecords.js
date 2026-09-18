@@ -12,11 +12,11 @@ function isDispute(status) {
 }
 
 function isValidRow(row) {
-  const khata = cell(row["खाता"]);
   const khesra = cell(row["खेसरा"]);
-  if (!khata || !khesra) return false;
-  // Skip broken/total rows Excel sometimes appends
-  if (khesra === "0" || khata.length > 8) return false;
+  const rakwa = cell(row["रकवा"]);
+  // Keep rows that have a real खेसरा + रकवा (खाता can be 0, e.g. घर)
+  if (!khesra || khesra === "0") return false;
+  if (!rakwa) return false;
   return true;
 }
 
@@ -35,6 +35,7 @@ export function parseMkKhanSheet(workbook, XLSX) {
       khesra: cell(row["खेसरा"]),
       rakwa: cell(row["रकवा"]),
       yeDi: cell(row["ए0 डी0"]),
+      localName: cell(row["localName"]),
       status,
       message: cell(row["Message"]),
       isDispute: isDispute(status),

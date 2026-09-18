@@ -10,10 +10,8 @@ export default function HomePage({ records }) {
   return (
     <div className="space-y-5">
       <section>
-        <h2 className="text-lg font-semibold text-text sm:text-xl">पाँच भाइयों का ब्यौरा</h2>
-        <p className="mt-1 text-sm text-text/60">
-          अभी M. K. Khan का डेटा Excel से आ रहा है। बाकी भाइयों का डेटा जल्द जोड़ा जाएगा।
-        </p>
+        <h2 className="text-lg font-semibold text-text sm:text-xl">Summary Land Record</h2>
+      
       </section>
 
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">

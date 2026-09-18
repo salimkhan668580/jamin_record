@@ -21,7 +21,15 @@ export default function BrotherPage({ records }) {
     if (!needle) return brotherRecords;
 
     return brotherRecords.filter((record) =>
-      [record.khata, record.khesra, record.rakwa, record.yeDi, record.status, record.message]
+      [
+        record.khata,
+        record.khesra,
+        record.localName,
+        record.rakwa,
+        record.yeDi,
+        record.status,
+        record.message,
+      ]
         .join(" ")
         .toLowerCase()
         .includes(needle),
@@ -45,7 +53,7 @@ export default function BrotherPage({ records }) {
   return (
     <div className="space-y-4">
       <Link to="/" className="inline-flex items-center gap-1 text-sm font-medium text-primary">
-        <span aria-hidden>‹</span> सभी भाई
+        <span aria-hidden>‹</span> Back
       </Link>
 
       <section className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
@@ -53,15 +61,26 @@ export default function BrotherPage({ records }) {
           {brother.initials}
         </span>
         <div className="min-w-0">
-          <h2 className="truncate text-lg font-semibold text-text">{brother.nameHi}</h2>
-          <p className="truncate text-xs text-text/55">{brother.name}</p>
+          <h2 className="truncate text-lg font-semibold text-text">{brother.name}</h2>
+          <p className=" truncate text-xs text-text/55">{brother.nameHi}</p>
           {hasExcelData ? (
-            <p className="mt-1 text-[11px] text-secondary">Excel · M.k.khan Details</p>
+            <p className="mt-1 text-[11px] text-secondary">M.k.khan Details</p>
           ) : (
-            <p className="mt-1 text-[11px] text-text/45">Excel डेटा अभी उपलब्ध नहीं</p>
+            <p className="mt-1 text-[11px] text-text/45">Data not available yet</p>
           )}
         </div>
       </section>
+
+      {hasExcelData ? (
+        <div className="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <p className="font-semibold">Note</p>
+          <p className="mt-1 leading-relaxed">
+            खेसरा <span className="font-semibold">9466</span> और{" "}
+            <span className="font-semibold">9467</span> बद्री वाला list में नहीं जोड़े गए हैं — इन पर
+            discussion की जरूरत है।
+          </p>
+        </div>
+      ) : null}
 
       {!hasExcelData ? (
         <div className="rounded-2xl border border-dashed border-border bg-card px-4 py-10 text-center">
@@ -82,7 +101,7 @@ export default function BrotherPage({ records }) {
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="खाता, खेसरा या dispute खोजें"
+              placeholder="खाता, खेसरा या local name खोजें"
               className="min-h-11 w-full rounded-xl border border-border bg-card px-3 text-base text-text outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           ) : null}
