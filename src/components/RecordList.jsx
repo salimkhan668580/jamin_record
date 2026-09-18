@@ -1,4 +1,8 @@
+import { useState } from "react";
 import { sumRakwa, sumYeDi } from "../lib/rakwa";
+
+const LOCAL_NAME_PASSWORD = "1974";
+const MASKED_LOCAL_NAME = "*******";
 
 const COLUMNS = [
   { key: "khata", label: "खाता" },
@@ -28,7 +32,37 @@ function StatusBadge({ status, isDispute }) {
   );
 }
 
+function displayValue(record, columnKey, localNameUnlocked) {
+  if (columnKey === "localName") {
+    if (!localNameUnlocked) return MASKED_LOCAL_NAME;
+    return show(record.localName);
+  }
+  return show(record[columnKey]);
+}
+
 export default function RecordList({ records }) {
+  const [password, setPassword] = useState("");
+  const [localNameUnlocked, setLocalNameUnlocked] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+
+  function handleUnlock(event) {
+    event.preventDefault();
+    if (password.trim() === LOCAL_NAME_PASSWORD) {
+      setLocalNameUnlocked(true);
+      setPasswordError("");
+      setPassword("");
+      return;
+    }
+    setPasswordError("गलत पासवर्ड");
+    setLocalNameUnlocked(false);
+  }
+
+  function handleLock() {
+    setLocalNameUnlocked(false);
+    setPassword("");
+    setPasswordError("");
+  }
+
   if (records.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-border bg-card px-4 py-10 text-center">
@@ -40,8 +74,51 @@ export default function RecordList({ records }) {
 
   return (
     <>
+      <div className="rounded-2xl border border-border bg-card p-3 sm:p-4">
+        {localNameUnlocked ? (
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-sm font-medium text-primary">Local Name खुला है</p>
+            <button
+              type="button"
+              onClick={handleLock}
+              className="min-h-10 rounded-xl border border-border px-4 text-sm font-medium text-text/70 transition hover:bg-background"
+            >
+              फिर से छिपाएं
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleUnlock} className="flex flex-col gap-2 sm:flex-row sm:items-end">
+            <label className="min-w-0 flex-1">
+              <span className="text-xs font-medium text-text/60">
+                Local Name देखने के लिए पासवर्ड डालें
+              </span>
+              <input
+                type="password"
+                inputMode="numeric"
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                  setPasswordError("");
+                }}
+                placeholder="पासवर्ड"
+                className="mt-1 min-h-11 w-full rounded-xl border border-border bg-background px-3 text-base text-text outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+            </label>
+            <button
+              type="submit"
+              className="min-h-11 rounded-xl bg-primary px-5 text-sm font-semibold text-white transition hover:bg-primary/90"
+            >
+              दिखाएं
+            </button>
+          </form>
+        )}
+        {passwordError ? (
+          <p className="mt-2 text-xs font-medium text-red-600">{passwordError}</p>
+        ) : null}
+      </div>
+
       {/* Mobile: stacked cards */}
-      <ul className="space-y-3 md:hidden">
+      <ul className="mt-3 space-y-3 md:hidden">
         {records.map((record, index) => (
           <li
             key={record.id}
@@ -78,7 +155,7 @@ export default function RecordList({ records }) {
                         : "text-base font-semibold text-text"
                     }
                   >
-                    {show(record[column.key])}
+                    {displayValue(record, column.key, localNameUnlocked)}
                   </dd>
                 </div>
               ))}
@@ -95,7 +172,7 @@ export default function RecordList({ records }) {
       </ul>
 
       {/* Desktop: table */}
-      <div className="hidden overflow-x-auto rounded-2xl border border-border bg-card md:block">
+      <div className="mt-3 hidden overflow-x-auto rounded-2xl border border-border bg-card md:block">
         <table className="w-full min-w-[820px] text-left text-sm">
           <thead className="bg-primary/5 text-xs uppercase text-text/60">
             <tr>
@@ -129,7 +206,7 @@ export default function RecordList({ records }) {
                         : "px-4 py-3 font-medium text-text"
                     }
                   >
-                    {show(record[column.key])}
+                    {displayValue(record, column.key, localNameUnlocked)}
                   </td>
                 ))}
                 <td className="px-4 py-3">

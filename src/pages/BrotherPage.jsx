@@ -21,15 +21,7 @@ export default function BrotherPage({ records }) {
     if (!needle) return brotherRecords;
 
     return brotherRecords.filter((record) =>
-      [
-        record.khata,
-        record.khesra,
-        record.localName,
-        record.rakwa,
-        record.yeDi,
-        record.status,
-        record.message,
-      ]
+      [record.khata, record.khesra, record.rakwa, record.yeDi, record.status, record.message]
         .join(" ")
         .toLowerCase()
         .includes(needle),
@@ -101,7 +93,7 @@ export default function BrotherPage({ records }) {
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="खाता, खेसरा या local name खोजें"
+              placeholder="खाता या खेसरा खोजें"
               className="min-h-11 w-full rounded-xl border border-border bg-card px-3 text-base text-text outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           ) : null}
