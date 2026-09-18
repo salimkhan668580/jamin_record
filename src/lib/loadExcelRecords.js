@@ -1,6 +1,21 @@
 export const EXCEL_URL = "/jamin_record.xlsx";
-export const MK_KHAN_SHEET = "M.k.khan Details";
+
+/** Brothers that load from Excel (sheet name must match exactly). */
+export const EXCEL_BROTHER_SHEETS = {
+  "mk-khan": { sheetName: "M.k.khan Details", idPrefix: "mk" },
+  "md-ali": { sheetName: "Md_Ali_details", idPrefix: "ali" },
+};
+
 export const MK_KHAN_BROTHER_ID = "mk-khan";
+export const MD_ALI_BROTHER_ID = "md-ali";
+
+export function hasExcelSheet(brotherId) {
+  return Boolean(EXCEL_BROTHER_SHEETS[brotherId]);
+}
+
+export function getExcelSheetName(brotherId) {
+  return EXCEL_BROTHER_SHEETS[brotherId]?.sheetName ?? null;
+}
 
 function cell(value) {
   if (value == null) return "";
@@ -21,8 +36,11 @@ function isValidRow(row) {
   return true;
 }
 
-export function parseMkKhanSheet(workbook, XLSX) {
-  const sheet = workbook.Sheets[MK_KHAN_SHEET];
+export function parseBrotherSheet(workbook, XLSX, brotherId) {
+  const config = EXCEL_BROTHER_SHEETS[brotherId];
+  if (!config) return [];
+
+  const sheet = workbook.Sheets[config.sheetName];
   if (!sheet) return [];
 
   const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
@@ -31,8 +49,8 @@ export function parseMkKhanSheet(workbook, XLSX) {
     const status = cell(row["Status"]) || "Correct";
     const message = cell(row["Message"]);
     return {
-      id: `mk-${index + 1}`,
-      brotherId: MK_KHAN_BROTHER_ID,
+      id: `${config.idPrefix}-${index + 1}`,
+      brotherId,
       khata: cell(row["खाता"]),
       khesra: cell(row["खेसरा"]),
       rakwa: cell(row["रकवा"]),
@@ -46,6 +64,17 @@ export function parseMkKhanSheet(workbook, XLSX) {
   });
 }
 
+export function parseAllExcelRecords(workbook, XLSX) {
+  return Object.keys(EXCEL_BROTHER_SHEETS).flatMap((brotherId) =>
+    parseBrotherSheet(workbook, XLSX, brotherId),
+  );
+}
+
+/** @deprecated use parseBrotherSheet / parseAllExcelRecords */
+export function parseMkKhanSheet(workbook, XLSX) {
+  return parseBrotherSheet(workbook, XLSX, MK_KHAN_BROTHER_ID);
+}
+
 export async function loadLandRecordsFromExcel(url = EXCEL_URL) {
   const XLSX = await import("xlsx");
   const response = await fetch(url);
@@ -55,5 +84,5 @@ export async function loadLandRecordsFromExcel(url = EXCEL_URL) {
 
   const buffer = await response.arrayBuffer();
   const workbook = XLSX.read(buffer, { type: "array" });
-  return parseMkKhanSheet(workbook, XLSX);
+  return parseAllExcelRecords(workbook, XLSX);
 }

@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import RecordList from "../components/RecordList";
 import StatTile from "../components/StatTile";
 import { getBrother } from "../data/brothers";
-import { MK_KHAN_BROTHER_ID } from "../lib/loadExcelRecords";
+import { getExcelSheetName, hasExcelSheet } from "../lib/loadExcelRecords";
 import { sumRakwa, sumYeDi } from "../lib/rakwa";
 
 export default function BrotherPage({ records }) {
@@ -11,10 +11,13 @@ export default function BrotherPage({ records }) {
   const brother = getBrother(brotherId);
   const [query, setQuery] = useState("");
 
+  const hasExcelData = hasExcelSheet(brotherId);
+  const sheetName = getExcelSheetName(brotherId);
+
   const brotherRecords = useMemo(() => {
-    if (brotherId !== MK_KHAN_BROTHER_ID) return [];
-    return records;
-  }, [brotherId, records]);
+    if (!hasExcelData) return [];
+    return records.filter((record) => record.brotherId === brotherId);
+  }, [brotherId, records, hasExcelData]);
 
   const visibleRecords = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -40,7 +43,6 @@ export default function BrotherPage({ records }) {
   }
 
   const infoCount = brotherRecords.filter((record) => record.isInfo).length;
-  const hasExcelData = brotherId === MK_KHAN_BROTHER_ID;
 
   return (
     <div className="space-y-4">
@@ -54,21 +56,32 @@ export default function BrotherPage({ records }) {
         </span>
         <div className="min-w-0">
           <h2 className="truncate text-lg font-semibold text-text">{brother.name}</h2>
-          <p className=" truncate text-xs text-text/55">{brother.nameHi}</p>
+          <p className="truncate text-xs text-text/55">{brother.nameHi}</p>
           {hasExcelData ? (
-            <p className="mt-1 text-[11px] text-secondary">M.k.khan Details</p>
+            <p className="mt-1 text-[11px] text-secondary">{sheetName}</p>
           ) : (
             <p className="mt-1 text-[11px] text-text/45">Data not available yet</p>
           )}
         </div>
       </section>
 
-    
-
       {!hasExcelData ? (
         <div className="rounded-2xl border border-dashed border-border bg-card px-4 py-10 text-center">
           <p className="font-medium text-text">इस भाई का Excel डेटा अभी नहीं है</p>
-          <p className="mt-1 text-sm text-text/55">अभी सिर्फ M. K. Khan का sheet जुड़ा है।</p>
+          <p className="mt-1 text-sm text-text/55">
+            अभी M. K. Khan और Md. Ali के sheets जुड़े हैं।
+          </p>
+        </div>
+      ) : brotherRecords.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-amber-300 bg-amber-50 px-4 py-10 text-center">
+          <p className="font-medium text-amber-900">Sheet मिला नहीं / खाली है</p>
+          <p className="mt-1 text-sm text-amber-800/80">
+            Excel में sheet नाम ठीक यही होना चाहिए:{" "}
+            <span className="font-semibold">{sheetName}</span>
+          </p>
+          <p className="mt-2 text-xs text-amber-800/70">
+            Save करके <code>public/jamin_record.xlsx</code> में copy करें, फिर page refresh करें।
+          </p>
         </div>
       ) : (
         <>
@@ -79,15 +92,13 @@ export default function BrotherPage({ records }) {
             <StatTile label="Info" value={infoCount} />
           </section>
 
-          {brotherRecords.length > 0 ? (
-            <input
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="खाता या खेसरा खोजें"
-              className="min-h-11 w-full rounded-xl border border-border bg-card px-3 text-base text-text outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
-            />
-          ) : null}
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="खाता या खेसरा खोजें"
+            className="min-h-11 w-full rounded-xl border border-border bg-card px-3 text-base text-text outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
 
           <RecordList records={visibleRecords} />
         </>

@@ -1,7 +1,7 @@
 import BrotherCard from "../components/BrotherCard";
 import StatTile from "../components/StatTile";
 import { BROTHERS } from "../data/brothers";
-import { MK_KHAN_BROTHER_ID } from "../lib/loadExcelRecords";
+import { hasExcelSheet } from "../lib/loadExcelRecords";
 import { sumRakwa, sumYeDi } from "../lib/rakwa";
 
 export default function HomePage({ records }) {
@@ -11,7 +11,6 @@ export default function HomePage({ records }) {
     <div className="space-y-5">
       <section>
         <h2 className="text-lg font-semibold text-text sm:text-xl">Summary Land Record</h2>
-      
       </section>
 
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -23,17 +22,15 @@ export default function HomePage({ records }) {
 
       <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {BROTHERS.map((brother) => {
-          const brotherRecords =
-            brother.id === MK_KHAN_BROTHER_ID
-              ? records
-              : [];
+          const brotherRecords = records.filter((record) => record.brotherId === brother.id);
+          const enabled = hasExcelSheet(brother.id);
 
           return (
             <BrotherCard
               key={brother.id}
               brother={brother}
               records={brotherRecords}
-              disabled={brother.id !== MK_KHAN_BROTHER_ID}
+              disabled={!enabled}
             />
           );
         })}
