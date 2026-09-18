@@ -7,8 +7,9 @@ function cell(value) {
   return String(value).trim();
 }
 
-function isDispute(status) {
-  return cell(status).toLowerCase() === "dispute";
+function isFlaggedStatus(status) {
+  const value = cell(status).toLowerCase();
+  return value === "dispute" || value === "info";
 }
 
 function isValidRow(row) {
@@ -28,6 +29,7 @@ export function parseMkKhanSheet(workbook, XLSX) {
 
   return rows.filter(isValidRow).map((row, index) => {
     const status = cell(row["Status"]) || "Correct";
+    const message = cell(row["Message"]);
     return {
       id: `mk-${index + 1}`,
       brotherId: MK_KHAN_BROTHER_ID,
@@ -37,8 +39,9 @@ export function parseMkKhanSheet(workbook, XLSX) {
       yeDi: cell(row["ए0 डी0"]),
       localName: cell(row["localName"]),
       status,
-      message: cell(row["Message"]),
-      isDispute: isDispute(status),
+      message,
+      // Excel "Dispute" / "Info" status OR any Message → Info
+      isInfo: isFlaggedStatus(status) || Boolean(message),
     };
   });
 }

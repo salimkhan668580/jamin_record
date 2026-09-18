@@ -39,7 +39,7 @@ export default function BrotherPage({ records }) {
     );
   }
 
-  const disputeCount = brotherRecords.filter((record) => record.isDispute).length;
+  const infoCount = brotherRecords.filter((record) => record.isInfo).length;
   const hasExcelData = brotherId === MK_KHAN_BROTHER_ID;
 
   return (
@@ -63,16 +63,7 @@ export default function BrotherPage({ records }) {
         </div>
       </section>
 
-      {hasExcelData ? (
-        <div className="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          <p className="font-semibold">Note</p>
-          <p className="mt-1 leading-relaxed">
-            खेसरा <span className="font-semibold">9466</span> और{" "}
-            <span className="font-semibold">9467</span> बद्री वाला list में नहीं जोड़े गए हैं — इन पर
-            discussion की जरूरत है।
-          </p>
-        </div>
-      ) : null}
+    
 
       {!hasExcelData ? (
         <div className="rounded-2xl border border-dashed border-border bg-card px-4 py-10 text-center">
@@ -85,7 +76,7 @@ export default function BrotherPage({ records }) {
             <StatTile label="रिकॉर्ड" value={brotherRecords.length} />
             <StatTile label="कुल रकवा" value={sumRakwa(brotherRecords)} hint="बीघा.कट्ठा.धुर" />
             <StatTile label="कुल ए0 डी0" value={sumYeDi(brotherRecords)} />
-            <StatTile label="Dispute" value={disputeCount} />
+            <StatTile label="Info" value={infoCount} />
           </section>
 
           {brotherRecords.length > 0 ? (

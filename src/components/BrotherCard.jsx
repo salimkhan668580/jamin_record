@@ -18,9 +18,9 @@ export default function BrotherCard({ brother, records, disabled = false }) {
             <>
               <span>{records.length} रिकॉर्ड</span>
               <span className="text-secondary">रकवा {sumRakwa(records)}</span>
-              {records.some((r) => r.isDispute) ? (
-                <span className="font-medium text-red-600">
-                  {records.filter((r) => r.isDispute).length} dispute
+              {records.some((r) => r.isInfo) ? (
+                <span className="font-medium text-sky-700">
+                  {records.filter((r) => r.isInfo).length} info
                 </span>
               ) : null}
             </>

@@ -5,7 +5,7 @@ import { MK_KHAN_BROTHER_ID } from "../lib/loadExcelRecords";
 import { sumRakwa, sumYeDi } from "../lib/rakwa";
 
 export default function HomePage({ records }) {
-  const disputeCount = records.filter((record) => record.isDispute).length;
+  const infoCount = records.filter((record) => record.isInfo).length;
 
   return (
     <div className="space-y-5">
@@ -18,7 +18,7 @@ export default function HomePage({ records }) {
         <StatTile label="कुल रिकॉर्ड" value={records.length} />
         <StatTile label="कुल रकवा" value={sumRakwa(records)} hint="बीघा.कट्ठा.धुर" />
         <StatTile label="कुल ए0 डी0" value={sumYeDi(records)} />
-        <StatTile label="Dispute" value={disputeCount} />
+        <StatTile label="Info" value={infoCount} />
       </section>
 
       <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
