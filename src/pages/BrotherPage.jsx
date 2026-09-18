@@ -47,7 +47,7 @@ export default function BrotherPage({ records }) {
   return (
     <div className="space-y-4">
       <Link to="/" className="inline-flex items-center gap-1 text-sm font-medium text-primary">
-        <span aria-hidden>‹</span> Back
+        <span aria-hidden>←</span> Back
       </Link>
 
       <section className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
@@ -57,10 +57,8 @@ export default function BrotherPage({ records }) {
         <div className="min-w-0">
           <h2 className="truncate text-lg font-semibold text-text">{brother.name}</h2>
           <p className="truncate text-xs text-text/55">{brother.nameHi}</p>
-          {hasExcelData ? (
-            <p className="mt-1 text-[11px] text-secondary">{sheetName}</p>
-          ) : (
-            <p className="mt-1 text-[11px] text-text/45">Data not available yet</p>
+          {!hasExcelData && (
+          <p className="mt-1 text-[11px] text-text/45">Data not available yet</p>
           )}
         </div>
       </section>
@@ -92,15 +90,11 @@ export default function BrotherPage({ records }) {
             <StatTile label="Info" value={infoCount} />
           </section>
 
-          <input
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="खाता या खेसरा खोजें"
-            className="min-h-11 w-full rounded-xl border border-border bg-card px-3 text-base text-text outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+          <RecordList
+            records={visibleRecords}
+            searchQuery={query}
+            onSearchChange={setQuery}
           />
-
-          <RecordList records={visibleRecords} />
         </>
       )}
     </div>

@@ -3,6 +3,7 @@ import AppHeader from "./components/AppHeader";
 import useExcelRecords from "./hooks/useExcelRecords";
 import BrotherPage from "./pages/BrotherPage";
 import HomePage from "./pages/HomePage";
+import NotesPage from "./pages/NotesPage";
 
 export default function App() {
   const { records, loading, error } = useExcelRecords();
@@ -14,7 +15,7 @@ export default function App() {
       <main className="mx-auto max-w-5xl px-4 py-4 pb-12 sm:px-6 sm:py-6">
         {loading ? (
           <div className="rounded-2xl border border-border bg-card px-4 py-12 text-center text-sm text-text/60">
-            Excel से डेटा लोड हो रहा है…
+            Loading...
           </div>
         ) : error ? (
           <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-8 text-center text-sm text-red-700">
@@ -27,6 +28,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage records={records} />} />
             <Route path="/brother/:brotherId" element={<BrotherPage records={records} />} />
+            <Route path="/notes" element={<NotesPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         )}

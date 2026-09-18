@@ -71,10 +71,12 @@ function displayValue(record, columnKey, localNameUnlocked) {
   return show(record[columnKey]);
 }
 
-export default function RecordList({ records }) {
+export default function RecordList({ records, searchQuery = "", onSearchChange }) {
   const [password, setPassword] = useState("");
   const [localNameUnlocked, setLocalNameUnlocked] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const [showSearchPanel, setShowSearchPanel] = useState(false);
+  const [showPasswordPanel, setShowPasswordPanel] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
 
   const recordIds = useMemo(() => records.map((record) => record.id), [records]);
@@ -132,6 +134,17 @@ export default function RecordList({ records }) {
     setLocalNameUnlocked(false);
     setPassword("");
     setPasswordError("");
+    setShowPasswordPanel(false);
+  }
+
+  function openSearchPanel() {
+    setShowSearchPanel(true);
+    setShowPasswordPanel(false);
+  }
+
+  function openPasswordPanel() {
+    setShowPasswordPanel(true);
+    setShowSearchPanel(false);
   }
 
   if (records.length === 0) {
@@ -147,47 +160,134 @@ export default function RecordList({ records }) {
 
   return (
     <>
-      <div className="rounded-2xl border border-border bg-card p-3 sm:p-4">
-        {localNameUnlocked ? (
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-sm font-medium text-primary">Local Name खुला है</p>
-            <button
-              type="button"
-              onClick={handleLock}
-              className="min-h-10 rounded-xl border border-border px-4 text-sm font-medium text-text/70 transition hover:bg-background"
-            >
-              फिर से छिपाएं
-            </button>
-          </div>
-        ) : (
-          <form onSubmit={handleUnlock} className="flex flex-col gap-2 sm:flex-row sm:items-end">
-            <label className="min-w-0 flex-1">
-              <span className="text-xs font-medium text-text/60">
-                Local Name देखने के लिए पासवर्ड डालें
-              </span>
-              <input
-                type="password"
-                inputMode="numeric"
-                value={password}
-                onChange={(event) => {
-                  setPassword(event.target.value);
-                  setPasswordError("");
+      <div className="space-y-3">
+        {/* Two buttons — input fields show only after click */}
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={openSearchPanel}
+            className={`min-h-11 rounded-xl border px-3 text-sm font-semibold transition ${
+              showSearchPanel
+                ? "border-primary bg-primary text-white"
+                : "border-border bg-card text-text hover:border-primary/40"
+            }`}
+          >
+            खाता खोजें
+          </button>
+          <button
+            type="button"
+            onClick={openPasswordPanel}
+            disabled={localNameUnlocked}
+            className={`min-h-11 rounded-xl border px-3 text-sm font-semibold transition disabled:opacity-60 ${
+              localNameUnlocked || showPasswordPanel
+                ? "border-primary bg-primary/10 text-primary"
+                : "border-border bg-card text-text hover:border-primary/40"
+            }`}
+          >
+            {localNameUnlocked ? "Local Name खुला" : "Local Name"}
+          </button>
+        </div>
+
+        {showSearchPanel && onSearchChange ? (
+          <div className="rounded-2xl border border-border bg-card p-3 sm:p-4">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-medium text-text/60">खाता या खेसरा खोजें</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowSearchPanel(false);
+                  onSearchChange("");
                 }}
-                placeholder="पासवर्ड"
-                className="mt-1 min-h-11 w-full rounded-xl border border-border bg-background px-3 text-base text-text outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
-              />
-            </label>
-            <button
-              type="submit"
-              className="min-h-11 rounded-xl bg-primary px-5 text-sm font-semibold text-white transition hover:bg-primary/90"
-            >
-              दिखाएं
-            </button>
-          </form>
-        )}
-        {passwordError ? (
-          <p className="mt-2 text-xs font-medium text-red-600">{passwordError}</p>
+                className="text-xs font-medium text-text/50 hover:text-text"
+              >
+                Close
+              </button>
+            </div>
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(event) => onSearchChange(event.target.value)}
+              placeholder="खाता या खेसरा खोजें"
+              autoFocus
+              className="mt-2 min-h-11 w-full rounded-xl border border-border bg-background px-3 text-base text-text outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
         ) : null}
+
+        {(showPasswordPanel || localNameUnlocked) && (
+          <div className="rounded-2xl border border-border bg-card p-3 sm:p-4">
+            {localNameUnlocked ? (
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-sm font-medium text-primary">Local Name खुला है</p>
+                <button
+                  type="button"
+                  onClick={handleLock}
+                  className="min-h-10 rounded-xl border border-border px-4 text-sm font-medium text-text/70 transition hover:bg-background"
+                >
+                  फिर से छिपाएं
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleUnlock} className="flex flex-col gap-2 sm:flex-row sm:items-end">
+                <div className="flex min-w-0 flex-1 items-center justify-between gap-2 sm:hidden">
+                  <span className="text-xs font-medium text-text/60">
+                    Local Name to view
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPasswordPanel(false);
+                      setPassword("");
+                      setPasswordError("");
+                    }}
+                    className="text-xs font-medium text-text/50"
+                  >
+                    बंद
+                  </button>
+                </div>
+                <label className="min-w-0 flex-1">
+                  <span className="hidden text-xs font-medium text-text/60 sm:block">
+                    Local Name to view
+                  </span>
+                  <input
+                    type="password"
+                    inputMode="numeric"
+                    value={password}
+                    onChange={(event) => {
+                      setPassword(event.target.value);
+                      setPasswordError("");
+                    }}
+                    placeholder="Password"
+                    autoFocus
+                    className="mt-1 min-h-11 w-full rounded-xl border border-border bg-background px-3 text-base text-text outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 sm:mt-1"
+                  />
+                </label>
+                <div className="flex gap-2">
+                  <button
+                    type="submit"
+                    className="min-h-11 flex-1 rounded-xl bg-primary px-5 text-sm font-semibold text-white transition hover:bg-primary/90 sm:flex-none"
+                  >
+                    Show
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPasswordPanel(false);
+                      setPassword("");
+                      setPasswordError("");
+                    }}
+                    className="hidden justify-center items-center min-h-11 rounded-xl border border-border px-4 text-sm font-medium text-text/70 sm:inline-flex"
+                  >
+                    Close
+                  </button>
+                </div>
+              </form>
+            )}
+            {passwordError ? (
+              <p className="mt-2 text-xs font-medium text-red-600">{passwordError}</p>
+            ) : null}
+          </div>
+        )}
       </div>
 
       {/* Selected रकवा summary — solid bg so cards don't show through on scroll */}

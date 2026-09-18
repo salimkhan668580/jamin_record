@@ -2,8 +2,12 @@ export const EXCEL_URL = "/jamin_record.xlsx";
 
 /** Brothers that load from Excel (sheet name must match exactly). */
 export const EXCEL_BROTHER_SHEETS = {
+  "md-islam-khan": { sheetName: "Md._Islam_Khan", idPrefix: "islam" },
   "mk-khan": { sheetName: "M.k.khan Details", idPrefix: "mk" },
   "md-ali": { sheetName: "Md_Ali_details", idPrefix: "ali" },
+  "junaid-khan": { sheetName: "Junaid_Khan", idPrefix: "junaid" },
+ 
+  "md-aslam-khan": { sheetName: "md_Aslam_Khan", idPrefix: "aslam" },
 };
 
 export const MK_KHAN_BROTHER_ID = "mk-khan";
