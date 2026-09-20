@@ -18,13 +18,13 @@ export default function NoteCard() {
         <div className="mt-3 space-y-1.5 rounded-xl border border-amber-300/50 bg-white/70 px-3 py-2">
           {LAND_SHARE_NOTES.map((note) => (
             <p key={note.id} className="text-xs leading-relaxed text-amber-950">
-              <span className="font-semibold">{note.from}</span> देगा{" "}
+              <span className="font-semibold">{note.from}</span> ➡️
               <span className="font-bold text-primary">{note.giver.gives}</span>
-              <span className="text-amber-800/60"> · खेसरा {note.khesra}</span>
+             
             </p>
           ))}
           <p className="border-t border-amber-200/80 pt-1.5 text-[10px] text-amber-800/60">
-            M.K. Khan कुल मिलेगा: 0.2.0 + 0.1.0 + 0.1.0
+            M.K. Khan will get 0.2.0 + 0.1.0 + 0.1.0
           </p>
         </div>
       </div>

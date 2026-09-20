@@ -62,10 +62,11 @@ export const LAND_SHARE_NOTES = [
 export const TRANSFER_OPTION_TABLES = [
   {
     id: "aslam-mk",
-    title: " Md.Aslam Khan → M.K. Khan",
-    subtitle: "There are 8 valid common khesara:",
-    giverCol: "Md.Aslam Khan ke paas",
-    receiverCol: "M.K. Khan ke paas",
+    title: "Md.Aslam Khan ➡️ M.K. Khan",
+    subtitle: "There are 8 valid common khesaras and {highlight} need to be transferred",
+    subtitleHighlight: "2 katha lands",
+    giverCol: "Md.Aslam Khan's land",
+    receiverCol: "M.K. Khan's land",
     rows: [
       { khata: "1451", khesra: "9466", giverRakwa: "0.3.9", receiverRakwa: "0.3.8" },
       { khata: "1451", khesra: "9467", giverRakwa: "0.3.5", receiverRakwa: "0.3.6" },
@@ -79,10 +80,11 @@ export const TRANSFER_OPTION_TABLES = [
   },
   {
     id: "islam-mk",
-    title: "Md.Islam Khan → M.K. Khan",
-    subtitle: "There are 5 common khesara:",
-    giverCol: "Md.Islam Khan ke paas",
-    receiverCol: "M.K. Khan ke paas",
+    title: "Md.Islam Khan ➡️ M.K. Khan",
+    subtitle: "There are 5 common khesaras and {highlight} need to be transferred",
+    subtitleHighlight: "1 katha land",
+    giverCol: "Md.Islam Khan's land",
+    receiverCol: "M.K. Khan's land",
     rows: [
       { khata: "1173", khesra: "9578", giverRakwa: "0.6.9", receiverRakwa: "0.4.13" },
       { khata: "2007", khesra: "9746", giverRakwa: "0.5.10", receiverRakwa: "0.4.0" },
@@ -93,10 +95,11 @@ export const TRANSFER_OPTION_TABLES = [
   },
   {
     id: "junaid-mk",
-    title: "Junaid Khan → M.K. Khan",
-    subtitle: "There are 4 common khesara:",
-    giverCol: "Junaid Khan ke paas",
-    receiverCol: "M.K. Khan ke paas",
+    title: "Junaid Khan ➡️ M.K. Khan",
+    subtitle: "There are 4 common khesaras and {highlight} need to be transferred",
+    subtitleHighlight: "1 katha land",
+    giverCol: "Junaid Khan's land",
+    receiverCol: "M.K. Khan's land",
     rows: [
       { khata: "2007", khesra: "9746", giverRakwa: "0.10.0", receiverRakwa: "0.4.0" },
       { khata: "1452", khesra: "9766", giverRakwa: "0.2.5", receiverRakwa: "0.1.14" },

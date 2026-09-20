@@ -147,15 +147,9 @@ export default function RecordList({ records, searchQuery = "", onSearchChange }
     setShowSearchPanel(false);
   }
 
-  if (records.length === 0) {
-    return (
-      <div className="rounded-2xl border border-dashed border-border bg-card px-4 py-10 text-center">
-        <p className="text-3xl">📄</p>
-        <p className="mt-2 font-medium text-text">No record found</p>
-      </div>
-    );
-  }
-
+  // Keep search open while a query is active (so empty results still show the field)
+  const searchPanelOpen = showSearchPanel || Boolean(searchQuery.trim());
+  const hasActiveSearch = Boolean(searchQuery.trim());
   const infoCount = records.filter((r) => r.isInfo).length;
 
   return (
@@ -167,7 +161,7 @@ export default function RecordList({ records, searchQuery = "", onSearchChange }
             type="button"
             onClick={openSearchPanel}
             className={`min-h-11 rounded-xl border px-3 text-sm font-semibold transition ${
-              showSearchPanel
+              searchPanelOpen
                 ? "border-primary bg-primary text-white"
                 : "border-border bg-card text-text hover:border-primary/40"
             }`}
@@ -188,7 +182,7 @@ export default function RecordList({ records, searchQuery = "", onSearchChange }
           </button>
         </div>
 
-        {showSearchPanel && onSearchChange ? (
+        {searchPanelOpen && onSearchChange ? (
           <div className="rounded-2xl border border-border bg-card p-3 sm:p-4">
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs font-medium text-text/60">खाता या खेसरा खोजें</span>
@@ -290,6 +284,24 @@ export default function RecordList({ records, searchQuery = "", onSearchChange }
         )}
       </div>
 
+      {records.length === 0 ? (
+        <div className="mt-3 rounded-2xl border border-dashed border-border bg-card px-4 py-10 text-center">
+          <p className="text-3xl">📄</p>
+          <p className="mt-2 font-medium text-text">
+            {hasActiveSearch ? "इस खोज में कोई रिकॉर्ड नहीं मिला" : "No record found"}
+          </p>
+          {hasActiveSearch ? (
+            <button
+              type="button"
+              onClick={() => onSearchChange?.("")}
+              className="mt-3 min-h-10 rounded-xl border border-border px-4 text-sm font-medium text-primary"
+            >
+              खोज साफ करें
+            </button>
+          ) : null}
+        </div>
+      ) : (
+        <>
       {/* Selected रकवा summary — solid bg so cards don't show through on scroll */}
       <div className="mt-3 sticky top-16 z-10 rounded-2xl border border-border bg-card p-3 shadow-md sm:p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -455,6 +467,8 @@ export default function RecordList({ records, searchQuery = "", onSearchChange }
           </tfoot>
         </table>
       </div>
+        </>
+      )}
     </>
   );
 }

@@ -30,7 +30,7 @@ export default function BrotherCard({ brother, records, disabled = false }) {
             </div>
 
             <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-text/60">
-              <span>{records.length} रिकॉर्ड</span>
+              <span>{records.length} records</span>
               {infoCount > 0 ? (
                 <span className="font-medium text-sky-700">{infoCount} info</span>
               ) : null}
