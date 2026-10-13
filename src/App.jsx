@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import AppHeader from "./components/AppHeader";
+import DadiHomePage from "./components/dadi/HomePage";
+import LoginPage from "./components/dadi/loginPage";
 import useExcelRecords from "./hooks/useExcelRecords";
 import BrotherPage from "./pages/BrotherPage";
 import HomePage from "./pages/HomePage";
@@ -29,6 +31,8 @@ export default function App() {
             <Route path="/" element={<HomePage records={records} />} />
             <Route path="/brother/:brotherId" element={<BrotherPage records={records} />} />
             <Route path="/notes" element={<NotesPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/dadi" element={<DadiHomePage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         )}
