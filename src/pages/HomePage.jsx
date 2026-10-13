@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import BrotherCard from "../components/BrotherCard";
 import NoteCard from "../components/NoteCard";
 import { BROTHERS } from "../data/brothers";
@@ -21,8 +22,14 @@ export default function HomePage({ records }) {
 
   return (
     <div className="space-y-5">
-      <section>
+      <section className="flex items-center justify-between gap-3">
         <h2 className="text-lg font-semibold text-text sm:text-xl">Summary Land Record</h2>
+        <Link
+          to="/calculator"
+          className="shrink-0 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+        >
+          🧮 Calculator
+        </Link>
       </section>
 
       <section className="grid grid-cols-2 gap-3">
