@@ -4,7 +4,7 @@ import { AUTH_KEY } from "./dadi/loginPage";
 export default function AppHeader() {
   const navigate = useNavigate();
   // Subscribing to location re-renders the header after login/logout navigation.
-  useLocation();
+  const { pathname } = useLocation();
   const isLoggedIn = localStorage.getItem(AUTH_KEY) === "true";
 
   function handleLogout() {
@@ -25,13 +25,21 @@ export default function AppHeader() {
           </p>
         </Link>
         {isLoggedIn ? (
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="ml-auto shrink-0 rounded-xl bg-white/15 px-4 py-2 text-sm font-semibold hover:bg-white/25"
-          >
-            Logout
-          </button>
+          <div className="ml-auto flex shrink-0 gap-2">
+            <Link
+              to={pathname === "/dadi" ? "/" : "/dadi"}
+              className="rounded-xl bg-white/15 px-4 py-2 text-sm font-semibold hover:bg-white/25"
+            >
+              {pathname === "/dadi" ? "Home" : "Dadi"}
+            </Link>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="rounded-xl bg-white/15 px-4 py-2 text-sm font-semibold hover:bg-white/25"
+            >
+              Logout
+            </button>
+          </div>
         ) : (
           <Link
             to="/login"

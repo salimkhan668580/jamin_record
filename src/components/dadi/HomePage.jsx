@@ -4,6 +4,7 @@ import { AUTH_KEY } from "./loginPage";
 
 const documents = [
   { title: "वंशावली", src: "/vansavali.jpeg", type: "image" },
+  { title: "Dadi Samsudin Maulana", src: "/Samsudin -dadi.png", type: "image" },
   { title: "Rajpur Bagha", src: "/rajpur bagha (1).jpg", type: "image" },
   { title: "Tamkuhi Road – Avinash", src: "/tamkuhi road avinash (2).png", type: "image" },
   { title: "Bihar – Dhobi Wala", src: "/Bihar dhobi wala.pdf", type: "pdf" },
@@ -14,6 +15,9 @@ const documents = [
   { title: "Sheet No. 9", src: "/sheet no. 9.pdf", type: "pdf", isMap: true },
   { title: "Sheet No. 9 – Dada Jamin", src: "/sheet no. 9 dada jamin.pdf", type: "pdf", isMap: true },
   { title: "Sheet No. 9 – Dadi Jamin", src: "/sheet no. 9 Dadi jamin.pdf", type: "pdf", isMap: true },
+  { title: "Tamkuhi Road Map", src: "/tamkuhi road map.png", type: "image", isMap: true },
+  { title: "Abhinash Singh – Tamkuhi Road", src: "/abhinash Singh tamkuhi road .pdf", type: "pdf" },
+  { title: "Samsuddin Maulana – Tamkuhi Road", src: "/Samsuddin maulana tamkuhi road .pdf", type: "pdf" },
   { title: "Dadi – School ke Piche", src: "/dadi =- school k piche.pdf", type: "pdf" },
   { title: "Jamin No. in Dada Handwriting", src: "/jamin no. in Dada handwriting .pdf", type: "pdf" },
   { title: "Jamin Rasid and Doc 2916", src: "/jamin_rasid and doc  2916.pdf", type: "pdf" },
